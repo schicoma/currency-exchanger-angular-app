@@ -47,8 +47,8 @@ export class CurrencyConvertionService {
       params: {
         start_date: startDate,
         end_date: endDate,
-        base,
-        symbols: currencies.join(',')
+        // base,
+        // symbols: currencies.join(',')
       }
     });
   }

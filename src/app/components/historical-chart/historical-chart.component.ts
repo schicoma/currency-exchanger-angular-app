@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { CurrencyConvertionService } from 'src/app/services/currency-convertion.service';
 
 @Component({
   selector: 'app-historical-chart',
@@ -10,8 +11,9 @@ export class HistoricalChartComponent implements OnInit {
 
   chart: any = null;
 
-  constructor() {
-
+  constructor(
+    private currencyConvertionservice: CurrencyConvertionService
+  ) {
     Chart.register(...registerables);
   }
 
@@ -41,6 +43,17 @@ export class HistoricalChartComponent implements OnInit {
         aspectRatio:2.5
       }
       
+    });
+  }
+
+  getHistoricalData() {
+    const base = 'EUR';
+    const currencies = ['USD'];
+    const startDate = '2021-12-05';
+    const endDate = '2022-12-05';
+
+    this.currencyConvertionservice.getHistoricalData(base, currencies, startDate, endDate).subscribe(data => {
+      console.log(data);
     });
   }
 
