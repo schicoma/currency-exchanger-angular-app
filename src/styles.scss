@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+main {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.primary-button {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: 400;
+    font-size: 1rem;
+    border: solid 1px #007bff;
+    border-radius: 0.25rem;
+}
+
+.title-section {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        padding: 0.5rem;
+    }
+}

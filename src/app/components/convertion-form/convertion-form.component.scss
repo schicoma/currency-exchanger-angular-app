@@ -1,0 +1,72 @@
+
+.from-to-form > * {
+    margin-bottom: 1rem;
+}
+
+.from-to-form-inputs {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+
+    label {
+        flex-grow: 1;
+    }
+}
+
+.from-to-form-button {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.from-to-form-result {
+    display: flex;
+    gap: 1rem;
+
+    div {
+        border: solid 1px red;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    & > * {
+        flex-grow: 1;
+    }
+}
+
+.from-to-section {
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+
+    form {
+        display: flex;
+
+        & > div {
+            width: 50%;
+        }
+    }
+}
+
+.swap-button {
+    height: 2rem;
+    width: 2rem;
+
+    img {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+label {
+    display: inline-block;
+}
+
+input,
+select {
+    display: block;
+    width: 100%;
+    height: 2rem;
+}
+
+button {
+    cursor: pointer;
+}

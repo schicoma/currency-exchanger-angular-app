@@ -1,0 +1,46 @@
+<section class="from-to-section">
+    <form [formGroup]="convertionForm" (ngSubmit)="convert()">
+        <div>
+            <label>
+                <span>Amount</span>
+                <input type="number" formControlName="amount">
+            </label>
+        </div>
+        <div class="from-to-form">
+            <div class="from-to-form-inputs">
+                <label>
+                    <span>From</span>
+                    <select formControlName="from">
+                        <option></option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="PEN">PEN</option>
+                    </select>
+                </label>
+                <button class="swap-button" type="button" (click)="swapCurrencies()">
+                    <img src="assets/images/swap-icon.png" />
+                </button>
+                <label>
+                    <span>To</span>
+                    <select formControlName="to">
+                        <option></option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="PEN">PEN</option>
+                    </select>
+                </label>
+            </div>
+            <button class="primary-button from-to-form-button" type="submit">
+                Convert
+            </button>
+            <div class="from-to-form-result">
+                <div class="">
+                    {{ (result?.amount || 0.00) | number: '1.0-2' }} {{result?.currency}}
+                </div>
+                <button type="button" class="primary-button">
+                    More details
+                </button>
+            </div>
+        </div>
+    </form>
+</section>
