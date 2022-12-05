@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-detail',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailComponent implements OnInit {
 
-  constructor() { }
+  currencyFrom?: string;
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private route: Router
+  ) {
+    this.activatedRoute.params.subscribe(params => {
+      this.currencyFrom = params['currency'];
+    });
+   }
 
   ngOnInit(): void {
+  }
+
+  goHome() {
+    this.route.navigate(['home']);
   }
 
 }

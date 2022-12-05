@@ -3,13 +3,19 @@
     <app-header></app-header>
 
     <section class="title-section">
-        <h1>Currency exchanger</h1>
-        <button class="primary-button">
+        <h1>EUR - European Union Euro</h1>
+        <button class="primary-button" (click)="goHome()">
             Back to home
         </button>
     </section>
 
-    <app-convertion-form></app-convertion-form>
+    <app-convertion-form
+        [currencyFrom]="currencyFrom"
+    ></app-convertion-form>
+
+    <section>
+        <app-historical-chart></app-historical-chart>
+    </section>
 
 </main>
 

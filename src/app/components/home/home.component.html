@@ -4,11 +4,13 @@
 
     <section>
         <h1>
-            Currency exchanger.
+            Currency exchanger
         </h1>
     </section>
 
-    <app-convertion-form></app-convertion-form>
+    <app-convertion-form
+        [showDetailsButton]="true"
+    ></app-convertion-form>
 
     <section class="popular-currencies-grid">
         <div *ngFor="let currencies of popularCurrencies">1</div>

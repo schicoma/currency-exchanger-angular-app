@@ -17,7 +17,7 @@
                         <option value="PEN">PEN</option>
                     </select>
                 </label>
-                <button class="swap-button" type="button" (click)="swapCurrencies()">
+                <button class="swap-button" type="button" (click)="swapCurrencies()" [disabled]="isSwapDisabled()">
                     <img src="assets/images/swap-icon.png" />
                 </button>
                 <label>
@@ -37,7 +37,7 @@
                 <div class="">
                     {{ (result?.amount || 0.00) | number: '1.0-2' }} {{result?.currency}}
                 </div>
-                <button type="button" class="primary-button">
+                <button type="button" class="primary-button" *ngIf="showDetailsButton">
                     More details
                 </button>
             </div>

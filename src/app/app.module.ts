@@ -10,6 +10,7 @@ import { FixerApiInterceptor } from './interceptors/fixer-api.interceptor';
 import { DetailComponent } from './components/detail/detail.component';
 import { ConvertionFormComponent } from './components/convertion-form/convertion-form.component';
 import { HeaderComponent } from './components/header/header.component';
+import { HistoricalChartComponent } from './components/historical-chart/historical-chart.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { HeaderComponent } from './components/header/header.component';
     HomeComponent,
     DetailComponent,
     ConvertionFormComponent,
-    HeaderComponent
+    HeaderComponent,
+    HistoricalChartComponent
   ],
   imports: [
     BrowserModule,
