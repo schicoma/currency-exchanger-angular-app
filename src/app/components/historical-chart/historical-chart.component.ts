@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import * as moment from 'moment';
+import { FixerTimeseriesResponse } from 'src/app/commons/fixer-response.interface';
 import { CurrencyConvertionService } from 'src/app/services/currency-convertion.service';
+import { HistoricalChartEventService } from 'src/app/services/historical-chart-event.service';
 
 @Component({
   selector: 'app-historical-chart',
@@ -10,18 +12,17 @@ import { CurrencyConvertionService } from 'src/app/services/currency-convertion.
 })
 export class HistoricalChartComponent implements OnInit {
 
-  chart: any = null;
+  chart: Chart;
 
   @Input() currencyBase?: string;
   @Input() currencySymbol?: string;
 
   constructor(
-    private currencyConvertionService: CurrencyConvertionService
+    private currencyConvertionService: CurrencyConvertionService,
+    private historicalChartEventService: HistoricalChartEventService
   ) {
     Chart.register(...registerables);
-  }
 
-  ngOnInit(): void {
     this.chart = new Chart("realtime", {
       type: 'line', //this denotes tha type of chart
 
@@ -41,9 +42,20 @@ export class HistoricalChartComponent implements OnInit {
     });
   }
 
+  ngOnInit(): void {
+    this.historicalChartEventService.dataAsObservable.subscribe(data => {
+      this.getHistoricalData();
+    });
+  }
+
   getHistoricalData() {
+    console.log('Getting historical data ... ');
     const base = this.currencyBase!;
     const symbol = this.currencySymbol!;
+
+    if (!symbol) {
+      return;
+    }
 
     const lastMonthDate = moment().subtract(1, 'month');
     const endDate = lastMonthDate.endOf('month').format('YYYY-MM-DD');
@@ -54,7 +66,7 @@ export class HistoricalChartComponent implements OnInit {
     let timeseries = localStorage.getItem(key);
 
     if (!timeseries) {
-      this.currencyConvertionService.getHistoricalData(base, symbol, startDate, endDate).subscribe((data: any) => {
+      this.currencyConvertionService.getHistoricalData(base, symbol, startDate, endDate).subscribe((data: FixerTimeseriesResponse) => {
 
         // get information of the last day of each month
         const months = []; 
@@ -63,13 +75,15 @@ export class HistoricalChartComponent implements OnInit {
           const date = moment().subtract(i, 'month').endOf('month').format('YYYY-MM-DD');
           console.log(date);
           months.push({
-            currency: data.rates[date][symbol],
+            currency: data.rates.get(date)?.get(symbol),
             date: date
           });
         }
 
-        localStorage.setItem(key, JSON.stringify(months));
         this.updateChart(months);
+
+        // save result in local storage in order not to bring the values in every convert event.
+        localStorage.setItem(key, JSON.stringify(months));
       });
     } else {
       this.updateChart(JSON.parse(timeseries));

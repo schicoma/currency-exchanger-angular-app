@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HistoricalChartEventService } from 'src/app/services/historical-chart-event.service';
 
 @Component({
   selector: 'app-details',
@@ -17,6 +18,10 @@ export class DetailsComponent implements OnInit {
   ) {
     this.activatedRoute.params.subscribe(params => {
       this.currencyFrom = params['currency'];
+    });
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.currencyTo = params['to'];
     });
    }
 

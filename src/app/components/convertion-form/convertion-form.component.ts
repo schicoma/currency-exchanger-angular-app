@@ -2,7 +2,9 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CurrencyInformation } from 'src/app/commons/currency-information.component';
+import { FixerConvertResponse } from 'src/app/commons/fixer-response.interface';
 import { CurrencyConvertionService } from 'src/app/services/currency-convertion.service';
+import { HistoricalChartEventService } from 'src/app/services/historical-chart-event.service';
 
 @Component({
   selector: 'app-convertion-form',
@@ -16,17 +18,18 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
   result: CurrencyInformation | null = null;
 
   @Input() currencyTo?: string;
-  @Output() currencyToChange = new EventEmitter<string>();  
+  @Output() currencyToChange = new EventEmitter<string>();
 
   @Input() currencyFrom?: string;
   @Input() showDetailsButton?: boolean;
   @Input() showDefaultValues?: boolean;
 
-  @Output() convertEvent = new EventEmitter<any>();
+  @Output() convertEvent = new EventEmitter<FixerConvertResponse>();
 
   constructor(
-    private formBuilder: FormBuilder,
     private currencyConvertionService: CurrencyConvertionService,
+    private formBuilder: FormBuilder,
+    private historicalChartEventService: HistoricalChartEventService,
     private router: Router
   ) {
     this.convertionForm = this.formBuilder.group({
@@ -61,6 +64,13 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
 
       this.convertionForm.controls['from'].disable();
     }
+
+    const changesForCurrencyTo = changes['currencyTo'];
+    if (changesForCurrencyTo) {
+      this.convertionForm.patchValue({
+        to: changesForCurrencyTo.currentValue
+      });
+    }
   }
 
   isSwapDisabled() {
@@ -69,7 +79,7 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
 
   swapCurrencies() {
     const temp = this.convertionForm.controls['from'].value;
-    
+
     this.convertionForm.patchValue({
       from: this.convertionForm.controls['to'].value,
       to: temp
@@ -83,13 +93,13 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
     const amount = value.amount;
 
     this.currencyConvertionService.convert(from, to, amount)
-      .subscribe((data: any) => {
+      .subscribe((data: FixerConvertResponse) => {
         const to = data.query.to;
         const result = data.result;
 
         this.result = new CurrencyInformation(to, result);
 
-        this.convertEvent.emit(data);
+        this.historicalChartEventService.updateChart(data);
       });
   }
 

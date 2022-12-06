@@ -4,8 +4,8 @@
     </picture>
     <nav>
         <ul>
-            <li>EUR - USD Details</li>
-            <li>EUR - GBP Details</li>
+            <li [routerLink]="['/details', 'EUR']" [queryParams]="{to: 'USD'}">EUR - USD Details</li>
+            <li [routerLink]="['/details', 'EUR']" [queryParams]="{to: 'GBP'}">EUR - GBP Details</li>
         </ul>
     </nav>
 </header>

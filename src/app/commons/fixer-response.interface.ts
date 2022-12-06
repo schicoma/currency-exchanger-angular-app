@@ -1,15 +1,25 @@
-export interface FixerResponse {
+export interface FixerConvertResponse {
     success: boolean;
     result: number;
-    info: any;
-    query: any;
-    // "query": {
-    //     "from": "EUR",
-    //     "to": "USD",
-    //     "amount": 240
-    // },
-    // "info": {
-    //     "timestamp": 1670269023,
-    //     "rate": 1.048713
-    // }
+    query: FixerConvertQuery;
+    info: FixerConvertInfo;
+}
+
+interface FixerConvertQuery {
+    from: string;
+    to: string;
+    amount: number
+}
+interface FixerConvertInfo {
+    timestamp: number;
+    rate: number;
+}
+
+export interface FixerTimeseriesResponse {
+    success: boolean;
+    timeseries: number;
+    start_date: string;
+    end_date: string;
+    base: string;
+    rates: Map<string, Map<string, number>>;
 }

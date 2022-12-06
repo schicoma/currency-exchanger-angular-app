@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { of } from 'rxjs';
+import { FixerConvertResponse, FixerTimeseriesResponse } from '../commons/fixer-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,31 +9,12 @@ export class CurrencyConvertionService {
 
   private url = 'https://api.apilayer.com/fixer';
 
-  private testObject = {
-    "success": true,
-    "query": {
-        "from": "EUR",
-        "to": "USD",
-        "amount": 240
-    },
-    "info": {
-        "timestamp": 1670269023,
-        "rate": 1.048713
-    },
-    "date": "2022-12-05",
-    "result": 251.69112
-};
-
   constructor(
     private httpService: HttpClient
   ) { }
 
   convert(from: string, to: string, amount: number) {
-    if (!true) {
-      return of(this.testObject);
-    }
-
-    return this.httpService.get(this.url + '/convert', {
+    return this.httpService.get<FixerConvertResponse>(this.url + '/convert', {
       params: {
         to,
         from,
@@ -43,7 +24,7 @@ export class CurrencyConvertionService {
   }
 
   getHistoricalData(base:string, currency: string, startDate: string, endDate: string) {
-    return this.httpService.get(this.url + '/timeseries', {
+    return this.httpService.get<FixerTimeseriesResponse>(this.url + '/timeseries', {
       params: {
         start_date: startDate,
         end_date: endDate,
