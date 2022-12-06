@@ -37,7 +37,7 @@
                 <div class="">
                     {{ (result?.amount || 0.00) | number: '1.0-2' }} {{result?.currency}}
                 </div>
-                <button type="button" class="primary-button" *ngIf="showDetailsButton">
+                <button type="button" class="primary-button" *ngIf="showDetailsButton" (click)="goToDetails()">
                     More details
                 </button>
             </div>

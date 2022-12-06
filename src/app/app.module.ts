@@ -7,16 +7,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { FixerApiInterceptor } from './interceptors/fixer-api.interceptor';
-import { DetailComponent } from './components/detail/detail.component';
 import { ConvertionFormComponent } from './components/convertion-form/convertion-form.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HistoricalChartComponent } from './components/historical-chart/historical-chart.component';
+import { DetailsComponent } from './components/details/details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    DetailComponent,
+    DetailsComponent,
     ConvertionFormComponent,
     HeaderComponent,
     HistoricalChartComponent

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CurrencyInformation } from 'src/app/commons/currency-information.component';
 import { FixerResponse } from 'src/app/commons/fixer-response.interface';
 import { CurrencyConvertionService } from 'src/app/services/currency-convertion.service';
@@ -23,7 +24,8 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
 
   constructor(
     private formBuilder: FormBuilder,
-    private currencyConvertionService: CurrencyConvertionService
+    private currencyConvertionService: CurrencyConvertionService,
+    private router: Router
   ) {
     this.convertionForm = this.formBuilder.group({
       from: new FormControl(),
@@ -79,6 +81,11 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
 
   isSwapDisabled() {
     return !!this.currencyFrom;
+  }
+
+  goToDetails() {
+    const currency = this.convertionForm.value.from;
+    this.router.navigate(['details', currency]);
   }
 
 }

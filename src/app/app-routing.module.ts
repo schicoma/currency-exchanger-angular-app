@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DetailComponent } from './components/detail/detail.component';
+import { DetailsComponent } from './components/details/details.component';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
@@ -9,8 +9,12 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'detail/:currency',
-    component: DetailComponent
+    path: 'details/:currency',
+    component: DetailsComponent
+  },
+  {
+    path: '**',
+    redirectTo: 'home'
   }
 ];
 
