@@ -42,13 +42,13 @@ export class CurrencyConvertionService {
     });
   }
 
-  getHistoricalData(base:string, currencies: Array<string>, startDate: string, endDate: string) {
+  getHistoricalData(base:string, currency: string, startDate: string, endDate: string) {
     return this.httpService.get(this.url + '/timeseries', {
       params: {
         start_date: startDate,
         end_date: endDate,
-        // base,
-        // symbols: currencies.join(',')
+        base,
+        symbols: currency
       }
     });
   }

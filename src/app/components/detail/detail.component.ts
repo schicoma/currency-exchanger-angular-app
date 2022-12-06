@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class DetailComponent implements OnInit {
 
   currencyFrom?: string;
+  currencyTo?: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,

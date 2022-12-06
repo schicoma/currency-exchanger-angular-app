@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import * as moment from 'moment';
 import { CurrencyConvertionService } from 'src/app/services/currency-convertion.service';
 
 @Component({
@@ -11,50 +12,74 @@ export class HistoricalChartComponent implements OnInit {
 
   chart: any = null;
 
+  @Input() currencyBase?: string;
+  @Input() currencySymbol?: string;
+
   constructor(
-    private currencyConvertionservice: CurrencyConvertionService
+    private currencyConvertionService: CurrencyConvertionService
   ) {
     Chart.register(...registerables);
   }
 
   ngOnInit(): void {
     this.chart = new Chart("realtime", {
-      type: 'bar', //this denotes tha type of chart
+      type: 'line', //this denotes tha type of chart
 
       data: {// values on X-Axis
-        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13',
-								 '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17', ], 
+        labels: [], 
 	       datasets: [
           {
-            label: "Sales",
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
+            label: "Rates",
+            data: [],
             backgroundColor: 'blue'
-          },
-          {
-            label: "Profit",
-            data: ['542', '542', '536', '327', '17',
-									 '0.00', '538', '541'],
-            backgroundColor: 'limegreen'
-          }  
+          } 
         ]
       },
       options: {
         aspectRatio:2.5
       }
-      
     });
   }
 
   getHistoricalData() {
-    const base = 'EUR';
-    const currencies = ['USD'];
-    const startDate = '2021-12-05';
-    const endDate = '2022-12-05';
+    const base = this.currencyBase!;
+    const symbol = this.currencySymbol!;
 
-    this.currencyConvertionservice.getHistoricalData(base, currencies, startDate, endDate).subscribe(data => {
-      console.log(data);
-    });
+    const lastMonthDate = moment().subtract(1, 'month');
+    const endDate = lastMonthDate.endOf('month').format('YYYY-MM-DD');
+    const startDate = lastMonthDate.subtract(1, 'year').endOf('month').format('YYYY-MM-DD');
+
+    const key = `${base}-${symbol}`;
+
+    let timeseries = localStorage.getItem(key);
+
+    if (!timeseries) {
+      this.currencyConvertionService.getHistoricalData(base, symbol, startDate, endDate).subscribe((data: any) => {
+
+        // get information of the last day of each month
+        const months = []; 
+
+        for (let i = 12; i >= 1; i--) {
+          const date = moment().subtract(i, 'month').endOf('month').format('YYYY-MM-DD');
+          console.log(date);
+          months.push({
+            currency: data.rates[date][symbol],
+            date: date
+          });
+        }
+
+        localStorage.setItem(key, JSON.stringify(months));
+        this.updateChart(months);
+      });
+    } else {
+      this.updateChart(JSON.parse(timeseries));
+    }
+  }
+
+  updateChart(timeseries: Array<any>) {
+    this.chart.data.labels = timeseries.map((data) => data.date);
+    this.chart.data.datasets[0].data = timeseries.map((data) => data.currency);
+    this.chart.update();
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CurrencyInformation } from 'src/app/commons/currency-information.component';
 import { FixerResponse } from 'src/app/commons/fixer-response.interface';
@@ -15,6 +15,9 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
   convertionForm: FormGroup;
   result: CurrencyInformation | null = null;
 
+  @Input() currencyTo?: string;
+  @Output() currencyToChange = new EventEmitter<string>();  
+
   @Input() currencyFrom?: string;
   @Input() showDetailsButton?: boolean;
 
@@ -28,9 +31,11 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
       amount: new FormControl()
     });
 
-    this.popularCurrencies = [
-      {}, {}, {}, {}, {},
-    ];
+    this.convertionForm.get('to')?.valueChanges.subscribe((data) => {
+      this.currencyToChange.emit(data);
+    });
+
+    this.popularCurrencies = [{}, {}, {}, {}, {}];
   }
 
   ngOnChanges(changes: SimpleChanges): void {

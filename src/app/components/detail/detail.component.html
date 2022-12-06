@@ -11,10 +11,14 @@
 
     <app-convertion-form
         [currencyFrom]="currencyFrom"
+        [(currencyTo)]="currencyTo"
     ></app-convertion-form>
 
     <section>
-        <app-historical-chart></app-historical-chart>
+        <app-historical-chart
+            [currencyBase]="currencyFrom"
+            [currencySymbol]="currencyTo"
+        ></app-historical-chart>
     </section>
 
 </main>
