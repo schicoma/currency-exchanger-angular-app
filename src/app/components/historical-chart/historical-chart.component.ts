@@ -73,9 +73,9 @@ export class HistoricalChartComponent implements OnInit {
 
         for (let i = 12; i >= 1; i--) {
           const date = moment().subtract(i, 'month').endOf('month').format('YYYY-MM-DD');
-          console.log(date);
+
           months.push({
-            currency: data.rates.get(date)?.get(symbol),
+            currency: data.rates[date][symbol],
             date: date
           });
         }

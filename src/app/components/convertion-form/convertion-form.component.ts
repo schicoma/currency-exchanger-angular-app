@@ -46,7 +46,11 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
     this.convertionForm.get('amount')?.valueChanges.subscribe((data) => {
       if (data) {
         this.enableButtons = true;
-        this.convertionForm.get('from')?.enable();
+
+        if (this.showDefaultValues) {
+          this.convertionForm.get('from')?.enable();
+        }
+
         this.convertionForm.get('to')?.enable();
         return;
       }

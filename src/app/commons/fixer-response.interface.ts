@@ -21,7 +21,7 @@ export interface FixerTimeseriesResponse {
     start_date: string;
     end_date: string;
     base: string;
-    rates: Map<string, Map<string, number>>;
+    rates: { [key: string]: { [key: string]: number; }; };
 }
 
 export interface FixerSymbolsResponse {

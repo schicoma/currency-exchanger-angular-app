@@ -10,3 +10,9 @@
         border-radius: 0.25rem;
     }
 }
+
+@media screen and (max-width: 960px) {
+    .popular-currencies-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
