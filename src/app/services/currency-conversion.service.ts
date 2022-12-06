@@ -6,7 +6,7 @@ import { finalize, merge, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CurrencyConvertionService {
+export class CurrencyConversionService {
 
   public CURRENCIES!: Map<string, string>;
   public CURRENCIES_LIST: Array<any> = [];

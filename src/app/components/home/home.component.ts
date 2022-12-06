@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FixerConvertResponse, FixerLatestResponse } from 'src/app/commons/fixer-response.interface';
-import { CurrencyConvertionService } from 'src/app/services/currency-convertion.service';
+import { CurrencyConversionService } from 'src/app/services/currency-conversion.service';
 
 @Component({
   selector: 'app-home',
@@ -12,19 +12,19 @@ export class HomeComponent implements OnInit {
   popularCurrencies: Array<any> = [];
 
   constructor(
-    private currencyConvertionService: CurrencyConvertionService
+    private currencyConversionService: CurrencyConversionService
   ) {
 
   }
 
   ngOnInit(): void {
-    this.currencyConvertionService.getTop9Currencies().subscribe(data => {
+    this.currencyConversionService.getTop9Currencies().subscribe(data => {
       data.forEach(currencyCode => {
         this.popularCurrencies.push({
           rate: 0,
-          convertion:0,
+          conversion:0,
           currencyCode: currencyCode,
-          currencyName: this.currencyConvertionService.CURRENCIES.get(currencyCode)
+          currencyName: this.currencyConversionService.CURRENCIES.get(currencyCode)
         });
       });
     });
@@ -35,13 +35,13 @@ export class HomeComponent implements OnInit {
     const amount = data.query.amount;
     const currencies = this.popularCurrencies.map(currency => currency.currencyCode);
 
-    this.currencyConvertionService.getRateByCurrencies(base, currencies).subscribe((data: FixerLatestResponse) => {
+    this.currencyConversionService.getRateByCurrencies(base, currencies).subscribe((data: FixerLatestResponse) => {
       const keys = Object.keys(data.rates);
 
       keys.forEach(element => {
         const currency = this.popularCurrencies.find(currency => currency.currencyCode === element);
         currency.rate = data.rates[element];
-        currency.convertion = amount * currency.rate;
+        currency.conversion = amount * currency.rate;
       });
     });
   }

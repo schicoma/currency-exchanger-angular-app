@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConvertionFormComponent } from './convertion-form.component';
+import { ConversionFormComponent } from './conversion-form.component';
 
-describe('ConvertionFormComponent', () => {
-  let component: ConvertionFormComponent;
-  let fixture: ComponentFixture<ConvertionFormComponent>;
+describe('ConversionFormComponent', () => {
+  let component: ConversionFormComponent;
+  let fixture: ComponentFixture<ConversionFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConvertionFormComponent ]
+      declarations: [ ConversionFormComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ConvertionFormComponent);
+    fixture = TestBed.createComponent(ConversionFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

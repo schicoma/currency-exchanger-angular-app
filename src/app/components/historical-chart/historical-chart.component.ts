@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import * as moment from 'moment';
 import { FixerTimeseriesResponse } from 'src/app/commons/fixer-response.interface';
-import { CurrencyConvertionService } from 'src/app/services/currency-convertion.service';
+import { CurrencyConversionService } from 'src/app/services/currency-conversion.service';
 import { HistoricalChartEventService } from 'src/app/services/historical-chart-event.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class HistoricalChartComponent implements OnInit {
   @Input() currencySymbol?: string;
 
   constructor(
-    private currencyConvertionService: CurrencyConvertionService,
+    private currencyConversionService: CurrencyConversionService,
     private historicalChartEventService: HistoricalChartEventService
   ) {
     Chart.register(...registerables);
@@ -66,7 +66,7 @@ export class HistoricalChartComponent implements OnInit {
     let timeseries = localStorage.getItem(key);
 
     if (!timeseries) {
-      this.currencyConvertionService.getHistoricalData(base, symbol, startDate, endDate).subscribe((data: FixerTimeseriesResponse) => {
+      this.currencyConversionService.getHistoricalData(base, symbol, startDate, endDate).subscribe((data: FixerTimeseriesResponse) => {
 
         // get information of the last day of each month
         const months = []; 
