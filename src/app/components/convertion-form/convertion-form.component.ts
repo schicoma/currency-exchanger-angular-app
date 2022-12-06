@@ -17,6 +17,7 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
   popularCurrencies: Array<any> = [];
   convertionForm: FormGroup;
   result: CurrencyInformation | null = null;
+  currencies: Array<any> = [];
 
   @Input() currencyTo?: string;
   @Output() currencyToChange = new EventEmitter<string>();
@@ -59,6 +60,8 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
       this.convertionForm.get('from')?.disable();
       this.convertionForm.get('to')?.disable();
     });
+
+    this.currencies = this.currencyConvertionService.CURRENCIES_LIST;
   }
 
   ngOnInit(): void {

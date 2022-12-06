@@ -9,6 +9,7 @@ import { finalize, merge, Observable, of } from 'rxjs';
 export class CurrencyConvertionService {
 
   public CURRENCIES!: Map<string, string>;
+  public CURRENCIES_LIST: Array<any> = [];
   private url = 'https://api.apilayer.com/fixer';
 
   constructor(
@@ -20,6 +21,7 @@ export class CurrencyConvertionService {
       const symbols = localStorage.getItem('symbols');
       if (symbols) {
         this.CURRENCIES = new Map(Object.entries(JSON.parse(symbols)));
+        this.fillCurrenciesList();
         observer.complete();
 
         return;
@@ -29,6 +31,7 @@ export class CurrencyConvertionService {
         .pipe(finalize(() => observer.complete()))
         .subscribe(data => {
           this.CURRENCIES = data.symbols;
+          this.fillCurrenciesList();
           localStorage.setItem('symbols', JSON.stringify(this.CURRENCIES));
         });
     });
@@ -73,6 +76,18 @@ export class CurrencyConvertionService {
   getTop9Currencies() {
     const currencies = ['USD', 'EUR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'HKD', 'NZD'];
     return of(currencies);
+  }
+
+  private fillCurrenciesList() {
+    const entries = Object.fromEntries(this.CURRENCIES);
+    const keys = Object.keys(entries);
+
+    keys.forEach((key: string) => {
+      this.CURRENCIES_LIST.push({
+        code: key,
+        name: entries[key]
+      });
+    });
   }
 
 }

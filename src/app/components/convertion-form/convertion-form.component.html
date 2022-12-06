@@ -12,10 +12,7 @@
                     <span>From</span>
                     <select formControlName="from">
                         <option></option>
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                        <option value="PEN">PEN</option>
-                        <option value="GBP">GBP</option>
+                        <option *ngFor="let currency of currencies" [value]="currency.code">{{currency.code}}</option>
                     </select>
                 </label>
                 <button class="swap-button" type="button" (click)="swapCurrencies()" [disabled]="isSwapDisabled() || !enableButtons">
@@ -25,10 +22,7 @@
                     <span>To</span>
                     <select formControlName="to">
                         <option></option>
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                        <option value="PEN">PEN</option>
-                        <option value="GBP">GBP</option>
+                        <option *ngFor="let currency of currencies" [value]="currency.code">{{currency.code}}</option>
                     </select>
                 </label>
             </div>
