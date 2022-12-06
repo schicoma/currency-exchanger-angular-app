@@ -1,17 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { FixerConvertResponse, FixerTimeseriesResponse } from '../commons/fixer-response.interface';
+import { FixerConvertResponse, FixerLatestResponse, FixerSymbolsResponse, FixerTimeseriesResponse } from '../commons/fixer-response.interface';
+import { finalize, merge, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CurrencyConvertionService {
 
+  public CURRENCIES!: Map<string, string>;
   private url = 'https://api.apilayer.com/fixer';
 
   constructor(
     private httpService: HttpClient
   ) { }
+
+  init() {
+    const getSymbolsAsObservable = new Observable(observer => {
+      const symbols = localStorage.getItem('symbols');
+      if (symbols) {
+        this.CURRENCIES = new Map(Object.entries(JSON.parse(symbols)));
+        observer.complete();
+
+        return;
+      }
+
+      this.getCurrencies()
+        .pipe(finalize(() => observer.complete()))
+        .subscribe(data => {
+          this.CURRENCIES = data.symbols;
+          localStorage.setItem('symbols', JSON.stringify(this.CURRENCIES));
+        });
+    });
+
+    return getSymbolsAsObservable;
+  }
 
   convert(from: string, to: string, amount: number) {
     return this.httpService.get<FixerConvertResponse>(this.url + '/convert', {
@@ -23,7 +46,7 @@ export class CurrencyConvertionService {
     });
   }
 
-  getHistoricalData(base:string, currency: string, startDate: string, endDate: string) {
+  getHistoricalData(base: string, currency: string, startDate: string, endDate: string) {
     return this.httpService.get<FixerTimeseriesResponse>(this.url + '/timeseries', {
       params: {
         start_date: startDate,
@@ -33,4 +56,23 @@ export class CurrencyConvertionService {
       }
     });
   }
+
+  getCurrencies() {
+    return this.httpService.get<FixerSymbolsResponse>(this.url + '/symbols');
+  }
+
+  getRateByCurrencies(base: string, symbols: Array<string>) {
+    return this.httpService.get<FixerLatestResponse>(this.url + '/latest', {
+      params: {
+        base,
+        symbols: symbols.join(',')
+      }
+    });
+  }
+
+  getTop9Currencies() {
+    const currencies = ['USD', 'EUR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'HKD', 'NZD'];
+    return of(currencies);
+  }
+
 }

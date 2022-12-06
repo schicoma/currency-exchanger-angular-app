@@ -23,3 +23,16 @@ export interface FixerTimeseriesResponse {
     base: string;
     rates: Map<string, Map<string, number>>;
 }
+
+export interface FixerSymbolsResponse {
+    success: boolean;
+    symbols: Map<string, string>;
+}
+
+export interface FixerLatestResponse {
+    base: string;
+    date: string;
+    rates: { [key: string]: number; };
+    success: boolean;
+    timestamp: number;
+}

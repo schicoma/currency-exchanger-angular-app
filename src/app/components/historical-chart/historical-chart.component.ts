@@ -12,7 +12,7 @@ import { HistoricalChartEventService } from 'src/app/services/historical-chart-e
 })
 export class HistoricalChartComponent implements OnInit {
 
-  chart: Chart;
+  chart!: Chart;
 
   @Input() currencyBase?: string;
   @Input() currencySymbol?: string;
@@ -22,6 +22,12 @@ export class HistoricalChartComponent implements OnInit {
     private historicalChartEventService: HistoricalChartEventService
   ) {
     Chart.register(...registerables);
+  }
+
+  ngOnInit(): void {
+    this.historicalChartEventService.dataAsObservable.subscribe(data => {
+      this.getHistoricalData();
+    });
 
     this.chart = new Chart("realtime", {
       type: 'line', //this denotes tha type of chart
@@ -39,12 +45,6 @@ export class HistoricalChartComponent implements OnInit {
       options: {
         aspectRatio:2.5
       }
-    });
-  }
-
-  ngOnInit(): void {
-    this.historicalChartEventService.dataAsObservable.subscribe(data => {
-      this.getHistoricalData();
     });
   }
 

@@ -33,6 +33,13 @@ button {
     border-radius: 0.25rem;
 }
 
+.primary-button:disabled {
+    opacity: .65;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
 .title-section {
     display: flex;
     justify-content: space-between;

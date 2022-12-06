@@ -1,5 +1,5 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -11,7 +11,12 @@ import { ConvertionFormComponent } from './components/convertion-form/convertion
 import { HeaderComponent } from './components/header/header.component';
 import { HistoricalChartComponent } from './components/historical-chart/historical-chart.component';
 import { DetailsComponent } from './components/details/details.component';
+import { Observable } from 'rxjs';
+import { CurrencyConvertionService } from './services/currency-convertion.service';
 
+export function initializeAppFactory(currencyConvertionService: CurrencyConvertionService): () => Observable<any> {
+  return () => currencyConvertionService.init();
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,10 +31,11 @@ import { DetailsComponent } from './components/details/details.component';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    
+
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: FixerApiInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: FixerApiInterceptor, multi: true },
+    { provide: APP_INITIALIZER, useFactory: initializeAppFactory, deps: [CurrencyConvertionService], multi: true }
   ],
   bootstrap: [AppComponent]
 })

@@ -18,7 +18,7 @@
                         <option value="GBP">GBP</option>
                     </select>
                 </label>
-                <button class="swap-button" type="button" (click)="swapCurrencies()" [disabled]="isSwapDisabled()">
+                <button class="swap-button" type="button" (click)="swapCurrencies()" [disabled]="isSwapDisabled() || !enableButtons">
                     <img src="assets/images/swap-icon.png" />
                 </button>
                 <label>
@@ -32,14 +32,14 @@
                     </select>
                 </label>
             </div>
-            <button class="primary-button from-to-form-button" type="submit">
+            <button class="primary-button from-to-form-button" type="submit" [disabled]="!enableButtons">
                 Convert {{currencyTo}}
             </button>
             <div class="from-to-form-result">
                 <div class="">
-                    {{ (result?.amount || 0.00) | number: '1.0-2' }} {{result?.currency}}
+                    {{ (result?.amount || 0.00) | number: '1.2-2' }} {{result?.currency}}
                 </div>
-                <button type="button" class="primary-button" *ngIf="showDetailsButton" (click)="goToDetails()">
+                <button type="button" class="primary-button" *ngIf="showDetailsButton" (click)="goToDetails()" [disabled]="!enableButtons">
                     More details
                 </button>
             </div>

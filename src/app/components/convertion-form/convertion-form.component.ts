@@ -13,7 +13,8 @@ import { HistoricalChartEventService } from 'src/app/services/historical-chart-e
 })
 export class ConvertionFormComponent implements OnInit, OnChanges {
 
-  popularCurrencies: Array<any>;
+  enableButtons: boolean = false;
+  popularCurrencies: Array<any> = [];
   convertionForm: FormGroup;
   result: CurrencyInformation | null = null;
 
@@ -42,7 +43,18 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
       this.currencyToChange.emit(data);
     });
 
-    this.popularCurrencies = [{}, {}, {}, {}, {}];
+    this.convertionForm.get('amount')?.valueChanges.subscribe((data) => {
+      if (data) {
+        this.enableButtons = true;
+        this.convertionForm.get('from')?.enable();
+        this.convertionForm.get('to')?.enable();
+        return;
+      }
+
+      this.enableButtons = false;
+      this.convertionForm.get('from')?.disable();
+      this.convertionForm.get('to')?.disable();
+    });
   }
 
   ngOnInit(): void {
@@ -99,6 +111,7 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
 
         this.result = new CurrencyInformation(to, result);
 
+        this.convertEvent.emit(data);
         this.historicalChartEventService.updateChart(data);
       });
   }

@@ -9,10 +9,19 @@
     <app-convertion-form
         [showDetailsButton]="true"
         [showDefaultValues]="true"
+        (convertEvent)="convertTop9Currencies($event)"
     ></app-convertion-form>
 
     <section class="popular-currencies-grid">
-        <div *ngFor="let currencies of popularCurrencies">1</div>
+        <div *ngFor="let currencies of popularCurrencies">
+            <div style="display: flex;justify-content: space-between;align-items: flex-end;">
+                <h2>{{currencies.convertion | number: '1.2-2'}}</h2>
+                <small title="rate">{{currencies.rate | number: '1.2-4'}}</small>
+            </div>
+            <p>{{currencies.currencyCode}}</p>
+            <small>{{currencies.currencyName}}</small>
+            
+        </div>
     </section>
 
 </main>
