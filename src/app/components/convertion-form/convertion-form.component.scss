@@ -23,7 +23,8 @@
     gap: 1rem;
 
     div {
-        border: solid 1px red;
+        border: solid 1px black;
+        border-radius: 0.25rem;
         padding: 1rem;
         text-align: center;
     }
@@ -34,11 +35,15 @@
 }
 
 .from-to-section {
-    padding: 0.5rem;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    border: solid 1px rgb(208, 215, 222);
+    background-color: rgb(246, 248, 250);
     margin-bottom: 2rem;
 
     form {
         display: flex;
+        gap: 1rem;
 
         & > div {
             width: 50%;
@@ -48,7 +53,7 @@
 
 .swap-button {
     height: 2rem;
-    width: 2rem;
+    width: 4rem;
 
     img {
         width: 15px;
@@ -62,6 +67,7 @@
 
 label {
     display: inline-block;
+    width: 100%;
 }
 
 input,

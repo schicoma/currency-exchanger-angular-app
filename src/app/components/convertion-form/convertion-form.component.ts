@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CurrencyInformation } from 'src/app/commons/currency-information.component';
-import { FixerResponse } from 'src/app/commons/fixer-response.interface';
 import { CurrencyConvertionService } from 'src/app/services/currency-convertion.service';
 
 @Component({
@@ -21,6 +20,9 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
 
   @Input() currencyFrom?: string;
   @Input() showDetailsButton?: boolean;
+  @Input() showDefaultValues?: boolean;
+
+  @Output() convertEvent = new EventEmitter<any>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +42,16 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
     this.popularCurrencies = [{}, {}, {}, {}, {}];
   }
 
+  ngOnInit(): void {
+    if (this.showDefaultValues) {
+      this.convertionForm.patchValue({
+        from: 'EUR',
+        to: 'USD',
+        amount: 1
+      });
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const changesForCurrencyFrom = changes['currencyFrom'];
     if (changesForCurrencyFrom) {
@@ -51,7 +63,8 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void {
+  isSwapDisabled() {
+    return !!this.currencyFrom;
   }
 
   swapCurrencies() {
@@ -76,11 +89,8 @@ export class ConvertionFormComponent implements OnInit, OnChanges {
 
         this.result = new CurrencyInformation(to, result);
 
+        this.convertEvent.emit(data);
       });
-  }
-
-  isSwapDisabled() {
-    return !!this.currencyFrom;
   }
 
   goToDetails() {

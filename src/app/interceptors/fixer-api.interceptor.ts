@@ -6,6 +6,7 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class FixerApiInterceptor implements HttpInterceptor {
@@ -15,7 +16,7 @@ export class FixerApiInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (request.url.indexOf('apilayer.com') !== -1 ) {
       request = request.clone({
-        headers: request.headers.set('apiKey', 'KgG1DmcnOPp5fCK3kMm5l0zb24c2aCIJ')
+        headers: request.headers.set('apiKey', environment.fixerApiKey)
       });
     }
 
